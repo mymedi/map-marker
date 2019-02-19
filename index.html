@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Geocoding</title>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+</head>
+<body>
+
+<form id="form" action="">
+    <input id="location" type="text">
+    <button type="submit">submit</button>
+</form>
+
+<div id="coords"></div>
+
+
+<script>
+
+    var form = document.getElementById('form');
+    form.addEventListener('submit', geocode);
+
+
+    function geocode(event){
+        event.preventDefault();
+
+        var location= document.getElementById('location').value;
+        axios.get('https://maps.googleapis.com/maps/api/geocode/json',{
+            params:{
+                address:location,
+                key:'AIzaSyABsmuVtAMqQ35kC7A4OIfgh5v6PSKlvF4'
+            }
+        }).then(function(response){
+            console.log(response);
+            var lat = response.data.results[0].geometry.location.lat;
+            var lng = response.data.results[0].geometry.location.lng;
+            var coordsop = ` <li><strong>lattitude:</strong>${lat}</li>
+                           <li><strong>longitude:</strong>${lng}</li>
+            `;
+
+            document.getElementById('coords').innerHTML = coordsop;
+
+        }).catch(function(error){
+            console.log("error");
+        })
+    }
+
+</script>
+    
+</body>
+</html>
